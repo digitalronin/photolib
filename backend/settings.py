@@ -1,15 +1,20 @@
 import logging
 from functools import cache
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 
 
 class Settings(BaseSettings):
-    logging_level: int = logging.DEBUG
+    logging_level: int = logging.INFO
     media_dir: str
 
-    class Config:
-        env_file = ".env"
+    image_suffixes: list[str] = [ "jpeg", "jpg","png" ]
+    video_suffixes: list[str] = [ "mov", "mp4" ]
 
+    model_config = ConfigDict(
+            extra='ignore',
+            env_file=".env",
+            )
 
 @cache
 def get_settings(env_name: str | None = None) -> Settings:
