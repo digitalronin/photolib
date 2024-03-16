@@ -19,7 +19,7 @@ const Gallery = () => {
 
   return (
     <div className="container mt-3" >
-      <div className="row mt-3">
+      <div className="row mt-3" style={{display: "inline"}}>
         {mediaItems.map(item => (<ItemThumbnail key={item.filepath} item={item} />))}
       </div>
     </div >
