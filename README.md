@@ -12,6 +12,9 @@ Web application to display and manage a collection of photos and videos.
 
 ### Gallery
 
+- Full page display
+- Click to advance to next/previous photo
+
 Filter photos by combinations of:
 
 - Tags
