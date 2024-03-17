@@ -48,7 +48,7 @@ def serve_thumbnail(hex_string):
 def get_images_metadata():
     config = get_settings()
     files = _fetch_json_files(config.media_dir)
-    data = [json.load(open(file, 'r')) for file in files[0:25]]
+    data = [json.load(open(file, 'r')) for file in files]
     return {"items": data}
 
 
