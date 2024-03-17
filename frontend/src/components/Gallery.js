@@ -6,6 +6,7 @@ import "react-image-gallery/styles/css/image-gallery.css"
 
 const Gallery = () => {
   const [mediaItems, setMediaItems] = useState([])
+  const [showThumbnails, setShowThumbnails] = useState(true)
 
   useEffect(() => {fetchMedia()}, [])
 
@@ -33,8 +34,13 @@ const Gallery = () => {
     }
   }
 
+  const toggleFullScreen = () => {
+    const showThumbs = showThumbnails
+    setShowThumbnails(!showThumbs)
+  }
+
   return (
-    <ImageGallery items={mediaItems} />
+    <ImageGallery items={mediaItems} onScreenChange={toggleFullScreen} showThumbnails={showThumbnails} />
   )
 
 }
