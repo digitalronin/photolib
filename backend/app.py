@@ -2,9 +2,10 @@
 import binascii
 import json
 import os
+import sys
 from datetime import datetime
 from PIL import Image
-import io
+import logging
 
 
 from flask import Flask, jsonify, request, send_file
@@ -13,6 +14,14 @@ from settings import get_settings
 from utils import hex_to_file_path, read_json_file
 
 app = Flask(__name__)
+
+app.logger.setLevel(logging.INFO)
+stream_handler = logging.StreamHandler(sys.stderr)
+stream_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+stream_handler.setFormatter(formatter)
+app.logger.addHandler(stream_handler)
+
 cors = CORS(app, origins=["http://localhost:3000", "http://192.168.50.188:3000"])
 
 
@@ -25,6 +34,7 @@ def _data_from_hex(hex_string):
 def serve_image(hex_string):
     data = _data_from_hex(hex_string)
     filepath = data["filepath"]
+    app.logger.info(f"image: {filepath}")
     return send_file(filepath, mimetype=data["mimetype"])
 
 
@@ -49,7 +59,7 @@ def get_images_metadata():
     config = get_settings()
     files = _fetch_json_files(config.media_dir)
     data = [json.load(open(file, 'r')) for file in files]
-    items_by_datetime = sorted(data, key=lambda x: str(x["datetime"]))
+    items_by_datetime = sorted(data, key=lambda x: f"{x['datetime']}{x['filepath']}")
     return {"items": items_by_datetime}
 
 
