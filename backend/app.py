@@ -49,7 +49,8 @@ def get_images_metadata():
     config = get_settings()
     files = _fetch_json_files(config.media_dir)
     data = [json.load(open(file, 'r')) for file in files]
-    return {"items": data}
+    items_by_datetime = sorted(data, key=lambda x: str(x["datetime"]))
+    return {"items": items_by_datetime}
 
 
 @app.route("/")
