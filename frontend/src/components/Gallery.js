@@ -26,6 +26,7 @@ const Gallery = () => {
           index,
           original: getImageUrl(item, 'image'),
           thumbnail: getImageUrl(item, 'thumbnail'),
+          description: item.datetime,
         }
       })
       setMediaItems(indexedItems)
@@ -40,7 +41,12 @@ const Gallery = () => {
   }
 
   return (
-    <ImageGallery items={mediaItems} onScreenChange={toggleFullScreen} showThumbnails={showThumbnails} />
+    <ImageGallery
+      items={mediaItems}
+      onScreenChange={toggleFullScreen}
+      showThumbnails={showThumbnails}
+      lazyLoad={true}
+    />
   )
 
 }
