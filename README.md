@@ -2,6 +2,28 @@
 
 Web application to display and manage a collection of photos and videos.
 
+# `backend`
+
+Python Flask API and media server web application.
+
+```
+cd backend
+make server
+```
+
+# `frontend`
+
+React JS web UI.
+
+```
+cd frontend
+make server
+```
+
+# `manage_collection`
+
+Scripts to manage the media files collection - mainly generating initial `*.json` metadata files for any media files which don't already have them.
+
 ## TODO
 
 - [ ] setup pre-commit with code formatting
