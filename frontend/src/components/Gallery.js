@@ -9,13 +9,13 @@ const Gallery = () => {
 
   useEffect(() => {fetchMedia()}, [])
 
-  const getUrl = item => {
+  const getImageUrl = (item, docpath) => {
     const hex = stringToHex(item.filepath)
-    return `${API_SERVER}/image/${hex}`
+    return `${API_SERVER}/${docpath}/${hex}`
   }
 
   const fetchMedia = async () => {
-    let url = `${API_SERVER}/api/images`
+    const url = `${API_SERVER}/api/images`
     try {
       const response = await fetch(url)
       const data = await response.json()
@@ -23,8 +23,8 @@ const Gallery = () => {
         return {
           ...item,
           index,
-          original: getUrl(item),
-          thumbnail: getUrl(item),
+          original: getImageUrl(item, 'image'),
+          thumbnail: getImageUrl(item, 'thumbnail'),
         }
       })
       setMediaItems(indexedItems)
