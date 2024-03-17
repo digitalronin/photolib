@@ -1,8 +1,7 @@
 import React from 'react'
 import {imageSrc, stringToHex} from '../utils'
-import {Link} from 'react-router-dom'
 
-const ItemThumbnail = ({item}) => {
+const ItemThumbnail = ({item, onClick}) => {
   const src = imageSrc(item.filepath)
   const hex = stringToHex(item.filepath)
   const link = `image/${hex}`
@@ -18,9 +17,7 @@ const ItemThumbnail = ({item}) => {
   }
 
   return (
-    <Link to={link}>
-      <img style={style} src={src} alt="" />
-    </Link>
+    <img style={style} src={src} alt="" onClick={onClick} />
   )
 }
 

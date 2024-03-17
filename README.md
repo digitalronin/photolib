@@ -26,6 +26,8 @@ Scripts to manage the media files collection - mainly generating initial `*.json
 
 ## TODO
 
+- [ ] next/previous function when viewing displayed images
+- [ ] paginate gallery images
 - [ ] setup pre-commit with code formatting
 - [ ] convert HEIC files to jpgs (could be multiple jpgs per heic)
 - [ ] create metadata for video files
