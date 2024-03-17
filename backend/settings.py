@@ -16,6 +16,8 @@ class Settings(BaseSettings):
             env_file=".env",
             )
 
+    thumbnail_cache_dir: str = "thumbnail_cache"
+
 @cache
 def get_settings(env_name: str | None = None) -> Settings:
     env_file = ".env" if env_name is None else f".{env_name}.env"
