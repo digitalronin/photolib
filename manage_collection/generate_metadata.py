@@ -7,11 +7,13 @@ one.
 import os
 import mimetypes
 import json
+import logging
 from PIL import Image
 from PIL.ExifTags import TAGS
 from backend.settings import get_settings
 
 config = get_settings()
+logger = logging.getLogger(__name__)
 
 def main():
     _generate_image_metadata()
@@ -30,6 +32,7 @@ def _ensure_metadata_file_exists(filepath: str):
 
 def _create_metadata_file(filepath: str):
     json_file = filepath + ".json"
+    logger.info(json_file)
     exif_data = _get_exif_data(filepath)
     data = {
             "filepath": filepath,
