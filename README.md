@@ -31,6 +31,8 @@ Scripts to manage the media files collection - mainly generating initial `*.json
 - [ ] setup pre-commit with code formatting
 - [ ] convert HEIC files to jpgs (could be multiple jpgs per heic)
 - [ ] create metadata for video files
+- [ ] allow vague dates (e.g. January 2021, or "Sometime between X and Y")
+- [x] Add links to jump to years
 
 ## Desired Features
 
