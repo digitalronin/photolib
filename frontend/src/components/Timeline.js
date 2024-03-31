@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {API_SERVER} from '../config'
-import {imageSrc, stringToHex} from '../utils'
-
+import React, { useState, useRef, useEffect } from "react"
+import { API_SERVER } from "../config"
+import { imageSrc, stringToHex } from "../utils"
 
 const LazyLoadingThumbnail = ({ item, onClick }) => {
   const [isVisible, setIsVisible] = useState(false)
@@ -28,7 +27,7 @@ const LazyLoadingThumbnail = ({ item, onClick }) => {
   }, [])
 
   const height = 150
-  const width = Math.round(height * (item.width/item.height))
+  const width = Math.round(height * (item.width / item.height))
 
   const style = {
     marginRight: "8px",
@@ -42,36 +41,51 @@ const LazyLoadingThumbnail = ({ item, onClick }) => {
     <img
       style={style}
       ref={imageRef}
-      src={isVisible ? src : ''}
+      src={isVisible ? src : ""}
       onClick={onClick}
     />
   )
 }
 
-
-const TimelineYear = ({year, mediaItems, startSlideshowFromIndex}) => {
+const TimelineYear = ({ year, mediaItems, startSlideshowFromIndex }) => {
   return (
-    <div className="container mt-3" >
+    <div className="container mt-3">
       <h1>{year}</h1>
-      <div className="row mt-3" style={{display: "inline"}}>
-        {mediaItems.map((item, index) =>
-          <LazyLoadingThumbnail key={item.filepath} item={item} onClick={() => startSlideshowFromIndex(item.index)} />
-        )}
+      <div className="row mt-3" style={{ display: "inline" }}>
+        {mediaItems.map((item, index) => (
+          <LazyLoadingThumbnail
+            key={item.filepath}
+            item={item}
+            onClick={() => startSlideshowFromIndex(item.index)}
+          />
+        ))}
       </div>
     </div>
   )
 }
 
-const Timeline = ({years, mediaItems, startSlideshowFromIndex}) => {
-  const yearSections = years.map(year => {
-    const filesInYear = Array.from(new Set(mediaItems
-      .filter(item => item.datetime)
-      .filter(item => { return item.datetime.substring(0, 4) === year.toString() })
-    ))
-    return <TimelineYear key={year} year={year} mediaItems={filesInYear} startSlideshowFromIndex={startSlideshowFromIndex} />
+const Timeline = ({ years, mediaItems, startSlideshowFromIndex }) => {
+  const yearSections = years.map((year) => {
+    const filesInYear = Array.from(
+      new Set(
+        mediaItems
+          .filter((item) => item.datetime)
+          .filter((item) => {
+            return item.datetime.substring(0, 4) === year.toString()
+          }),
+      ),
+    )
+    return (
+      <TimelineYear
+        key={year}
+        year={year}
+        mediaItems={filesInYear}
+        startSlideshowFromIndex={startSlideshowFromIndex}
+      />
+    )
   })
 
-  return (<div>{yearSections}</div>)
+  return <div>{yearSections}</div>
 }
 
 export default Timeline

@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import PageGallery from "./PageGallery"
 
 function App() {
@@ -12,4 +12,3 @@ function App() {
 }
 
 export default App
-

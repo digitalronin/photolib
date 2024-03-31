@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react'
-import {API_SERVER} from '../config'
-import {stringToHex} from '../utils'
+import React, { useEffect, useState } from "react"
+import { API_SERVER } from "../config"
+import { stringToHex } from "../utils"
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/css/image-gallery.css"
 import Timeline from "./Timeline"
 
 const SLIDESHOW = 1
-const TIMELINE  = 2
+const TIMELINE = 2
 
 const Gallery = () => {
   const [viewMode, setViewMode] = useState(TIMELINE)
@@ -14,7 +14,9 @@ const Gallery = () => {
   const [startIndex, setStartIndex] = useState(0)
   const [showThumbnails, setShowThumbnails] = useState(true)
 
-  useEffect(() => {fetchMedia()}, [])
+  useEffect(() => {
+    fetchMedia()
+  }, [])
 
   // Exit slideshow if user presses ESC
   useEffect(() => {
@@ -27,12 +29,11 @@ const Gallery = () => {
         }
       }
     }
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener("keydown", handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener("keydown", handleKeyDown)
     }
   }, []) // Empty dependency array means this effect runs only once after initial render
-
 
   const getImageUrl = (item, docpath) => {
     const hex = stringToHex(item.filepath)
@@ -48,14 +49,14 @@ const Gallery = () => {
         return {
           ...item,
           index,
-          original: getImageUrl(item, 'image'),
-          thumbnail: getImageUrl(item, 'thumbnail'),
+          original: getImageUrl(item, "image"),
+          thumbnail: getImageUrl(item, "thumbnail"),
           description: item.datetime,
         }
       })
       setMediaItems(indexedItems)
     } catch (error) {
-      console.error('Error fetching media items:', error)
+      console.error("Error fetching media items:", error)
     }
   }
 
@@ -69,60 +70,73 @@ const Gallery = () => {
     setStartIndex(index)
   }
 
-  const indexOfFirstItemInYear = year => {
-    const filteredItems = mediaItems.filter(item => item.datetime !== null)
-    return filteredItems.findIndex(item => {
-      const itemYear = parseInt(item.datetime.substring(0, 4));
-      return itemYear === year;
+  const indexOfFirstItemInYear = (year) => {
+    const filteredItems = mediaItems.filter((item) => item.datetime !== null)
+    return filteredItems.findIndex((item) => {
+      const itemYear = parseInt(item.datetime.substring(0, 4))
+      return itemYear === year
     })
   }
 
   const extractUniqueYears = () => {
-    const uniqueYears = Array.from(new Set(mediaItems
-      .filter(item => item.datetime) // Filter out items where datetime is null
-      .map(item => parseInt(item.datetime.substring(0, 4))) // Extract the year and parse it
-    ))
+    const uniqueYears = Array.from(
+      new Set(
+        mediaItems
+          .filter((item) => item.datetime) // Filter out items where datetime is null
+          .map((item) => parseInt(item.datetime.substring(0, 4))), // Extract the year and parse it
+      ),
+    )
     return uniqueYears
   }
 
-  const startSlideshowFromIndex = index => {
+  const startSlideshowFromIndex = (index) => {
     setStartIndex(index)
     setViewMode(SLIDESHOW)
   }
 
   const years = extractUniqueYears()
 
-  const yearLinks = years.map(year => {
-    return <a href="#"
-              style={{marginRight: "8px"}}
-              key={year}
-              onClick={() => jumpTo(year)}
-           >{year}</a>
+  const yearLinks = years.map((year) => {
+    return (
+      <a
+        href="#"
+        style={{ marginRight: "8px" }}
+        key={year}
+        onClick={() => jumpTo(year)}
+      >
+        {year}
+      </a>
+    )
   })
 
   let content
 
   if (viewMode === SLIDESHOW) {
-    content = <div>
-      <div className="m-2">
-      {yearLinks}
+    content = (
+      <div>
+        <div className="m-2">{yearLinks}</div>
+        <ImageGallery
+          items={mediaItems}
+          onScreenChange={toggleFullScreen}
+          showThumbnails={showThumbnails}
+          lazyLoad={true}
+          startIndex={startIndex}
+        />
       </div>
-      <ImageGallery
-        items={mediaItems}
-        onScreenChange={toggleFullScreen}
-        showThumbnails={showThumbnails}
-        lazyLoad={true}
-        startIndex={startIndex}
-      />
-    </div>
+    )
   }
 
   if (viewMode === TIMELINE) {
-    content = <Timeline years={years} mediaItems={mediaItems} startSlideshowFromIndex={startSlideshowFromIndex} />
+    content = (
+      <Timeline
+        years={years}
+        mediaItems={mediaItems}
+        startSlideshowFromIndex={startSlideshowFromIndex}
+      />
+    )
   }
 
   return content
-
 }
 
 export default Gallery
