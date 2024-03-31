@@ -1,11 +1,31 @@
-import React, {useEffect, useState, useParams} from 'react'
+import React, { useState, useRef, useEffect } from 'react';
 import {API_SERVER} from '../config'
 import {imageSrc, stringToHex} from '../utils'
 
-const Thumbnail = ({item, onClick}) => {
+
+const LazyLoadingThumbnail = ({ item, onClick }) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const imageRef = useRef(null)
   const src = imageSrc(item.filepath)
-  const hex = stringToHex(item.filepath)
-  const link = `image/${hex}`
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.unobserve(entry.target)
+        }
+      })
+    })
+
+    observer.observe(imageRef.current)
+
+    return () => {
+      if (imageRef.current) {
+        observer.unobserve(imageRef.current)
+      }
+    }
+  }, [])
 
   const height = 150
   const width = Math.round(height * (item.width/item.height))
@@ -19,7 +39,12 @@ const Thumbnail = ({item, onClick}) => {
   }
 
   return (
-    <img style={style} src={src} alt="" onClick={onClick} />
+    <img
+      style={style}
+      ref={imageRef}
+      src={isVisible ? src : ''}
+      onClick={onClick}
+    />
   )
 }
 
@@ -30,7 +55,7 @@ const TimelineYear = ({year, mediaItems, startSlideshowFromIndex}) => {
       <h1>{year}</h1>
       <div className="row mt-3" style={{display: "inline"}}>
         {mediaItems.map((item, index) =>
-          <Thumbnail key={item.filepath} item={item} onClick={() => startSlideshowFromIndex(item.index)} />
+          <LazyLoadingThumbnail key={item.filepath} item={item} onClick={() => startSlideshowFromIndex(item.index)} />
         )}
       </div>
     </div>
