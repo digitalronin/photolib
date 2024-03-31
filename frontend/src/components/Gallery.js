@@ -109,6 +109,15 @@ const Gallery = () => {
     )
   })
 
+  // Return a copy of mediaItems with most values set to {}, and a "window" of "real" items
+  // This means ImageGallery doesn't fetch thumbnails for images it's not currently displaying
+  const getMostlyFakeItemList = (index) => {
+    const windowSize = 10
+    return Array.from({ length: mediaItems.length }, (_, i) => {
+      return (i >= index - windowSize && i < index + windowSize) ? mediaItems[i] : {};
+    });
+  };
+
   let content
 
   if (viewMode === SLIDESHOW) {
@@ -116,11 +125,11 @@ const Gallery = () => {
       <div>
         <div className="m-2">{yearLinks}</div>
         <ImageGallery
-          items={mediaItems}
+          items={getMostlyFakeItemList(startIndex)}
           onScreenChange={toggleFullScreen}
           showThumbnails={showThumbnails}
-          lazyLoad={true}
           startIndex={startIndex}
+          onSlide={(index) => setStartIndex(index)}   // force a rerender of the ImageGallery so we get more images to display
         />
       </div>
     )
