@@ -3,8 +3,13 @@ import {API_SERVER} from '../config'
 import {stringToHex} from '../utils'
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/css/image-gallery.css"
+import Timeline from "./Timeline"
+
+const SLIDESHOW = 1
+const TIMELINE  = 2
 
 const Gallery = () => {
+  const [viewMode, setViewMode] = useState(TIMELINE)
   const [mediaItems, setMediaItems] = useState([])
   const [startIndex, setStartIndex] = useState(0)
   const [showThumbnails, setShowThumbnails] = useState(true)
@@ -62,7 +67,13 @@ const Gallery = () => {
     return uniqueYears
   }
 
+  const startSlideshowFromIndex = index => {
+    setStartIndex(index)
+    setViewMode(SLIDESHOW)
+  }
+
   const years = extractUniqueYears()
+
   const yearLinks = years.map(year => {
     return <a href="#"
               style={{marginRight: "8px"}}
@@ -71,8 +82,10 @@ const Gallery = () => {
            >{year}</a>
   })
 
-  return (
-    <div>
+  let content
+
+  if (viewMode === SLIDESHOW) {
+    content = <div>
       <div className="m-2">
       {yearLinks}
       </div>
@@ -84,7 +97,13 @@ const Gallery = () => {
         startIndex={startIndex}
       />
     </div>
-  )
+  }
+
+  if (viewMode === TIMELINE) {
+    content = <Timeline years={years} mediaItems={mediaItems} startSlideshowFromIndex={startSlideshowFromIndex} />
+  }
+
+  return content
 
 }
 
