@@ -16,6 +16,24 @@ const Gallery = () => {
 
   useEffect(() => {fetchMedia()}, [])
 
+  // Exit slideshow if user presses ESC
+  useEffect(() => {
+    const ESC = 27
+    const handleKeyDown = (event) => {
+      console.log("handleKeyDown", event.keyCode)
+      if (event.keyCode === ESC) {
+        if (viewMode === SLIDESHOW) {
+          setViewMode(TIMELINE)
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, []) // Empty dependency array means this effect runs only once after initial render
+
+
   const getImageUrl = (item, docpath) => {
     const hex = stringToHex(item.filepath)
     return `${API_SERVER}/${docpath}/${hex}`
