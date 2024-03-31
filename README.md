@@ -26,12 +26,21 @@ Scripts to manage the media files collection - mainly generating initial `*.json
 
 ## TODO
 
-- [ ] next/previous function when viewing displayed images
-- [ ] paginate gallery images
+- [ ] 
+- [ ] 
+- [ ] sync with phone/google photos/whatever?
+- [ ] enable moving photo to different folder
+- [ ] prettier timeline view
+- [ ] show geo-location
+- [ ] edit date
+- [ ] add description
+- [ ] albums (add to/remove from album, create new albums)
+- [ ] allow tagging (add/remove tags, create new tags)
 - [ ] setup pre-commit with code formatting
 - [ ] convert HEIC files to jpgs (could be multiple jpgs per heic)
 - [ ] create metadata for video files
 - [ ] allow vague dates (e.g. January 2021, or "Sometime between X and Y")
+- [x] next/previous function when viewing displayed images
 - [x] Add links to jump to years
 
 ## Desired Features
