@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
-import { API_SERVER } from "../config"
-import { imageSrc, stringToHex } from "../utils"
+import { imageSrc } from "../utils"
 
 const LazyLoadingThumbnail = ({ item, onClick }) => {
   const [isVisible, setIsVisible] = useState(false)
@@ -19,9 +18,11 @@ const LazyLoadingThumbnail = ({ item, onClick }) => {
 
     observer.observe(imageRef.current)
 
+    const imref = imageRef.current
+
     return () => {
-      if (imageRef.current) {
-        observer.unobserve(imageRef.current)
+      if (imref) {
+        observer.unobserve(imref)
       }
     }
   }, [])
@@ -43,6 +44,7 @@ const LazyLoadingThumbnail = ({ item, onClick }) => {
       ref={imageRef}
       src={isVisible ? src : ""}
       onClick={onClick}
+      alt="thumbnail"
     />
   )
 }

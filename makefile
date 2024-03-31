@@ -1,2 +1,2 @@
 format-code:
-	prettier --no-semi --write frontend
+	npx eslint --fix frontend
