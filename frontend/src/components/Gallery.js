@@ -125,7 +125,14 @@ const Gallery = () => {
   if (viewMode === SLIDESHOW) {
     content = (
       <div>
-        <div className="m-2">{yearLinks}</div>
+        <div className="m-2">
+          {yearLinks}
+          <span>
+            <a href="#" onClick={() => setViewMode(TIMELINE)}>
+              Exit slideshow
+            </a>
+          </span>
+        </div>
         <ImageGallery
           items={getMostlyFakeItemList(startIndex)}
           onScreenChange={toggleFullScreen}
