@@ -24,6 +24,7 @@ app.logger.addHandler(stream_handler)
 
 cors = CORS(app, origins=["http://localhost:3000", "http://192.168.50.188:3000"])
 
+THUMBNAIL_HEIGHT = 150
 
 def _data_from_hex(hex_string):
     filepath = hex_to_file_path(hex_string)
@@ -45,7 +46,9 @@ def serve_thumbnail(hex_string):
     if not os.path.exists(thumbnail_path):
         data = _data_from_hex(hex_string)
         original_image = Image.open(data["filepath"])
-        thumbnail_size = (100, 100)  # Adjust as needed
+        height = THUMBNAIL_HEIGHT
+        width = height * (data["width"] / data["height"])
+        thumbnail_size = (height, width)  # Adjust as needed
         thumbnail = original_image.copy()
         thumbnail.thumbnail(thumbnail_size)
         thumbnail.save(thumbnail_path, format='JPEG')
