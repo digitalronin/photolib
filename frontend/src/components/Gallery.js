@@ -114,9 +114,11 @@ const Gallery = () => {
   const getMostlyFakeItemList = (index) => {
     const windowSize = 10
     return Array.from({ length: mediaItems.length }, (_, i) => {
-      return (i >= index - windowSize && i < index + windowSize) ? mediaItems[i] : {};
-    });
-  };
+      return i >= index - windowSize && i < index + windowSize
+        ? mediaItems[i]
+        : {}
+    })
+  }
 
   let content
 
@@ -129,7 +131,7 @@ const Gallery = () => {
           onScreenChange={toggleFullScreen}
           showThumbnails={showThumbnails}
           startIndex={startIndex}
-          onSlide={(index) => setStartIndex(index)}   // force a rerender of the ImageGallery so we get more images to display
+          onSlide={(index) => setStartIndex(index)} // force a rerender of the ImageGallery so we get more images to display
         />
       </div>
     )

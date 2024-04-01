@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react"
-import { imageSrc } from "../utils"
+import { thumbnailSrc } from "../utils"
 
 const LazyLoadingThumbnail = ({ item, onClick }) => {
   const [isVisible, setIsVisible] = useState(false)
   const imageRef = useRef(null)
-  const src = imageSrc(item.filepath)
+  const src = thumbnailSrc(item.filepath)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {

@@ -5,6 +5,11 @@ const imageSrc = (filepath) => {
   return `${API_SERVER}/image/${hex}`
 }
 
+const thumbnailSrc = (filepath) => {
+  const hex = stringToHex(filepath)
+  return `${API_SERVER}/thumbnail/${hex}`
+}
+
 const stringToHex = (inputString) => {
   const textEncoder = new TextEncoder()
   const inputBytes = textEncoder.encode(inputString)
@@ -14,4 +19,4 @@ const stringToHex = (inputString) => {
   return hexString
 }
 
-export { imageSrc, stringToHex }
+export { imageSrc, thumbnailSrc, stringToHex }
