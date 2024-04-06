@@ -5,6 +5,8 @@ one.
 """
 
 import os
+import re
+from datetime import datetime
 import mimetypes
 import json
 import logging
@@ -34,6 +36,7 @@ def _create_metadata_file(filepath: str):
     json_file = filepath + ".json"
     logger.info(json_file)
     exif_data = _get_exif_data(filepath)
+
     data = {
             "filepath": filepath,
             "datetime": exif_data.get("DateTime"),
@@ -45,6 +48,10 @@ def _create_metadata_file(filepath: str):
             "longitude": exif_data.get("longitude"),
             "mimetype": _get_image_mimetype(filepath),
             }
+
+    if data["datetime"] is None:
+        data["datetime"] = _guess_datetime_from_filepath(filepath)
+
     with open(json_file, "w") as file:
         file.write(json.dumps(data))
 
@@ -104,6 +111,18 @@ def _get_media_filenames(root: str, suffixes: list[str]) -> list[str]:
                         files.append(os.path.join(dirpath, filename))
     return files
 
+
+def _guess_datetime_from_filepath(file_path: str) -> str | None:
+    date_pattern = r'(\d{4})/(\d{2})/(\d{2})'
+    match = re.search(date_pattern, file_path)
+    if match:
+        year = int(match.group(1))
+        month = int(match.group(2))
+        day = int(match.group(3))
+        dt = datetime(year, month, day)
+        return dt.strftime("%Y:%m:%d %H:%M:%S")
+
+    return None
 
 
 if __name__ == "__main__":
