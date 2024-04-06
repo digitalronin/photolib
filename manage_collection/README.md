@@ -2,6 +2,8 @@
 
 Scripts to manage a media collection
 
+> Create a `.env` symlink in this directory to `../.env`
+
 ## `make generate_metadata_files`
 
 Generate `*.json` files for all media files which don't already have one. Initial metadata comes from images' EXIF data and file information.

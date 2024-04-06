@@ -22,7 +22,8 @@ formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 stream_handler.setFormatter(formatter)
 app.logger.addHandler(stream_handler)
 
-cors = CORS(app, origins=["http://localhost:3000", "http://192.168.50.188:3000"])
+local_ip = get_settings().local_ip
+cors = CORS(app, origins=["http://localhost:3000", f"http://{local_ip}:3000"])
 
 THUMBNAIL_HEIGHT = 150
 

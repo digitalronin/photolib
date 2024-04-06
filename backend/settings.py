@@ -7,6 +7,7 @@ from pydantic import ConfigDict
 class Settings(BaseSettings):
     logging_level: int = logging.INFO
     media_dir: str
+    local_ip: str
 
     image_suffixes: list[str] = ["jpeg", "jpg", "png"]
     video_suffixes: list[str] = ["mov", "mp4"]
