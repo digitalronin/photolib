@@ -23,7 +23,7 @@ stream_handler.setFormatter(formatter)
 app.logger.addHandler(stream_handler)
 
 local_ip = get_settings().local_ip
-cors = CORS(app, origins=["http://localhost:3000", f"http://{local_ip}:3000"])
+CORS(app, origins=["http://localhost:3000", f"http://{local_ip}:3000"])
 
 THUMBNAIL_HEIGHT = 150
 
@@ -80,7 +80,11 @@ def _fetch_json_files(root_dir):
         for file in files:
             if file.endswith(".json"):
                 json_files.append(os.path.join(root, file))
-    json_files.remove(f"{root_dir}/files.json")  # Nothing to do with this project
+    try:
+        json_files.remove(f"{root_dir}/files.json")  # Nothing to do with this project
+    except ValueError:
+        pass
+
     return json_files
 
 
