@@ -5,6 +5,7 @@ import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/css/image-gallery.css"
 import Timeline from "./Timeline"
 import MetadataEditPanel from "./MetadataEditPanel"
+import OverlayImageControls from "./OverlayImageControls"
 
 const SLIDESHOW = 1
 const TIMELINE = 2
@@ -15,6 +16,7 @@ const Gallery = () => {
   const [startIndex, setStartIndex] = useState(0)
   const [showThumbnails, setShowThumbnails] = useState(true)
   const [showMetadataEditPanel, setShowMetadataEditPanel] = useState(true)
+  const [hover, setHover] = useState(false)
 
   useEffect(() => {
     fetchMedia()
@@ -122,6 +124,17 @@ const Gallery = () => {
     })
   }
 
+  const renderImageControls = () => {
+    const toggleEditPanel = () => {
+      const newValue = !showMetadataEditPanel
+      setShowMetadataEditPanel(newValue)
+    }
+
+    if (hover) {
+      return <OverlayImageControls infoClick={toggleEditPanel} />
+    }
+  }
+
   let content
 
   if (viewMode === SLIDESHOW) {
@@ -129,7 +142,7 @@ const Gallery = () => {
     const currentItem = itemList[startIndex]
 
     let galleryClassName = "col"
-    let panelStyle = {display: "none"}
+    let panelStyle = { display: "none" }
 
     if (showMetadataEditPanel) {
       galleryClassName = "col-9"
@@ -153,6 +166,9 @@ const Gallery = () => {
             showThumbnails={showThumbnails}
             startIndex={startIndex}
             onSlide={(index) => setStartIndex(index)} // force a rerender of the ImageGallery so we get more images to display
+            onMouseOver={(evt) => setHover(true)}
+            onMouseLeave={(evt) => setHover(false)}
+            renderCustomControls={renderImageControls}
           />
         </div>
         <div className="col-3 bg-light" style={panelStyle}>
