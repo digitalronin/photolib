@@ -4,6 +4,7 @@ import { stringToHex } from "../utils"
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/css/image-gallery.css"
 import Timeline from "./Timeline"
+import MetadataEditPanel from "./MetadataEditPanel"
 
 const SLIDESHOW = 1
 const TIMELINE = 2
@@ -124,22 +125,31 @@ const Gallery = () => {
 
   if (viewMode === SLIDESHOW) {
     content = (
-      <div>
-        <div className="m-2">
-          {yearLinks}
-          <span>
-            <a href="#" onClick={() => setViewMode(TIMELINE)}>
-              Exit slideshow
-            </a>
-          </span>
+      <div className="row">
+        <div className="col" id="imageGallery">
+          <div className="m-2">
+            {yearLinks}
+            <span>
+              <a href="#" onClick={() => setViewMode(TIMELINE)}>
+                Exit slideshow
+              </a>
+            </span>
+          </div>
+          <ImageGallery
+            items={getMostlyFakeItemList(startIndex)}
+            onScreenChange={toggleFullScreen}
+            showThumbnails={showThumbnails}
+            startIndex={startIndex}
+            /*
+               * 2024-05-11 This line causes the edit panel to move from the RHS to below the ImageGallery when
+               * the user moves to a different image. I'm not sure what effect removing it will have.
+              onSlide={(index) => setStartIndex(index)} // force a rerender of the ImageGallery so we get more images to display
+              */
+          />
         </div>
-        <ImageGallery
-          items={getMostlyFakeItemList(startIndex)}
-          onScreenChange={toggleFullScreen}
-          showThumbnails={showThumbnails}
-          startIndex={startIndex}
-          onSlide={(index) => setStartIndex(index)} // force a rerender of the ImageGallery so we get more images to display
-        />
+        <div className="col-3 bg-light">
+          <MetadataEditPanel />
+        </div>
       </div>
     )
   }
