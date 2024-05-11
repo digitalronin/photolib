@@ -14,6 +14,7 @@ const Gallery = () => {
   const [mediaItems, setMediaItems] = useState([])
   const [startIndex, setStartIndex] = useState(0)
   const [showThumbnails, setShowThumbnails] = useState(true)
+  const [showMetadataEditPanel, setShowMetadataEditPanel] = useState(true)
 
   useEffect(() => {
     fetchMedia()
@@ -124,9 +125,20 @@ const Gallery = () => {
   let content
 
   if (viewMode === SLIDESHOW) {
+    const itemList = getMostlyFakeItemList(startIndex)
+    const currentItem = itemList[startIndex]
+
+    let galleryClassName = "col"
+    let panelStyle = {display: "none"}
+
+    if (showMetadataEditPanel) {
+      galleryClassName = "col-9"
+      panelStyle = {}
+    }
+
     content = (
       <div className="row">
-        <div className="col" id="imageGallery">
+        <div className={galleryClassName} id="imageGallery">
           <div className="m-2">
             {yearLinks}
             <span>
@@ -136,19 +148,15 @@ const Gallery = () => {
             </span>
           </div>
           <ImageGallery
-            items={getMostlyFakeItemList(startIndex)}
+            items={itemList}
             onScreenChange={toggleFullScreen}
             showThumbnails={showThumbnails}
             startIndex={startIndex}
-            /*
-               * 2024-05-11 This line causes the edit panel to move from the RHS to below the ImageGallery when
-               * the user moves to a different image. I'm not sure what effect removing it will have.
-              onSlide={(index) => setStartIndex(index)} // force a rerender of the ImageGallery so we get more images to display
-              */
+            onSlide={(index) => setStartIndex(index)} // force a rerender of the ImageGallery so we get more images to display
           />
         </div>
-        <div className="col-3 bg-light">
-          <MetadataEditPanel />
+        <div className="col-3 bg-light" style={panelStyle}>
+          <MetadataEditPanel item={currentItem} />
         </div>
       </div>
     )
